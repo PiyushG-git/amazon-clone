@@ -96,6 +96,14 @@ class Order {
 
         return { ...order, items: itemsResult.rows };
     }
+
+    static async updateStatus(id, status) {
+        const result = await db.query(
+            'UPDATE orders SET status = $1 WHERE id = $2 RETURNING *',
+            [status, id]
+        );
+        return result.rows[0];
+    }
 }
 
 export default Order;

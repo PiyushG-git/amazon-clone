@@ -122,7 +122,7 @@ a:hover {
 .navbar {
   background-color: var(--nav-bg);
   color: var(--text-light);
-  padding: 10px 20px;
+  padding: 4px 20px;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -169,16 +169,17 @@ a:hover {
 /* =========================================
    NAVBAR DROPDOWN
    ========================================= */
+
 .nav-dropdown {
   display: none;
   position: absolute;
   top: 100%;
   right: -50px;
-  width: 480px;
+  width: 500px;
   background: white;
   color: #333;
   z-index: 1000;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   border-radius: var(--radius-sm);
   padding: 0;
   cursor: default;
@@ -189,39 +190,81 @@ a:hover {
   content: "";
   position: absolute;
   top: -10px;
-  left: 0;
-  width: 100%;
-  height: 10px;
+  right: 50px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid white;
 }
 
-.dropdown-header-row {
+.dropdown-profile-banner {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  background: #f0f7f7;
+  padding: 12px 20px;
+  background: #e7f4f5;
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   border-bottom: 1px solid #e7e7e7;
+  font-size: 13px;
 }
-.dropdown-user-info { display: flex; align-items: center; gap: 12px; }
-.dropdown-user-icon {
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  background: #ccc;
-  display: flex; align-items: center; justify-content: center;
+
+.dropdown-profile-banner span { color: #555; }
+
+.manage-profiles-link {
+  color: #007185;
+  border: 1px solid transparent;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
-.dropdown-user-name { font-weight: 700; font-size: 16px; }
-.dropdown-actions { display: flex; gap: 15px; font-size: 13px; }
-.dropdown-action-link { color: var(--link-color); cursor: pointer; }
-.dropdown-action-link:hover { color: #C7511F; text-decoration: underline; }
-.dropdown-columns { display: flex; padding: 20px; gap: 40px; }
-.dropdown-col { flex: 1; }
-.dropdown-col:first-child { border-right: 1px solid #f0f0f0; padding-right: 20px; }
-.dropdown-col h4 { font-size: 16px; font-weight: 700; margin-bottom: 15px; color: #111; }
+
+.manage-profiles-link:hover {
+  color: #c45500;
+  border: 1px solid #ff9900;
+  background: white;
+  text-decoration: none;
+}
+
+.dropdown-columns { 
+    display: flex; 
+    padding: 15px 0 20px; 
+}
+
+.dropdown-col { 
+    flex: 1; 
+    padding: 0 20px;
+}
+
+.dropdown-col:first-child { 
+    border-right: 1px solid #f0f0f0; 
+}
+
+.dropdown-col h4 { 
+    font-size: 16px; 
+    font-weight: 700; 
+    margin-bottom: 15px; 
+    color: #111; 
+}
+
 .dropdown-col ul { list-style: none; padding: 0; }
 .dropdown-col li { margin-bottom: 8px; }
-.dropdown-col a { font-size: 13px; color: #444; text-decoration: none; }
-.dropdown-col a:hover { color: #C7511F; text-decoration: underline; }
+
+.dropdown-col a { 
+    font-size: 13px; 
+    color: #444; 
+    text-decoration: none; 
+}
+
+.dropdown-col a:hover { 
+    color: #C7511F; 
+    text-decoration: underline; 
+}
+
+.highlight-orange {
+    color: #c45500 !important;
+}
 
 /* =========================================
    NAVBAR SEARCH
@@ -440,6 +483,24 @@ a:hover {
   mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0));
   -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0));
 }
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.85);
+  border: none;
+  cursor: pointer;
+  font-size: 36px;
+  color: #333;
+  padding: 8px 14px;
+  z-index: 10;
+  line-height: 1;
+  transition: background 0.2s;
+  user-select: none;
+}
+.hero-arrow:hover { background: rgba(255,255,255,1); }
+.hero-arrow-left { left: 0; }
+.hero-arrow-right { right: 0; }
 
 /* =========================================
    HOME CARDS
@@ -451,6 +512,36 @@ a:hover {
   z-index: 2;
   position: relative;
 }
+
+/* Top row: 3 quad cards left + 2 ad cards right */
+.home-row-top {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.home-top-left {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  flex: 1;
+  min-width: 0;
+}
+.home-top-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 300px;
+  flex-shrink: 0;
+}
+
+/* 4-col section full-width rows */
+.four-col-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -463,11 +554,30 @@ a:hover {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  height: 420px;
+  min-height: 380px;
   transition: box-shadow 0.2s;
 }
 .amz-card:hover { box-shadow: var(--shadow-md); }
-.amz-card h2 { font-size: 21px; font-weight: 700; color: #0f1111; margin-bottom: 10px; }
+.amz-card h2 { font-size: 18px; font-weight: 700; color: #0f1111; margin-bottom: 10px; }
+
+/* Business / Ad card variants */
+.amz-biz-card { min-height: auto; }
+.amz-biz-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.amz-ad-card { min-height: auto; }
+
+/* Featured Card (Big product + variants) */
+.featured-card { gap: 10px; }
+.featured-main { display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+.featured-img { width: 100%; height: 160px; object-fit: contain; background: white; margin-bottom: 8px; }
+.featured-info { display: flex; flex-direction: column; gap: 2px; }
+.featured-name { font-size: 13px; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; margin-bottom: 4px; }
+.featured-price-row { display: flex; align-items: baseline; gap: 6px; }
+.featured-price { font-size: 16px; font-weight: 700; color: #0f1111; }
+.featured-mrp { font-size: 11px; text-decoration: line-through; color: #565959; }
+
+.featured-variants { display: flex; gap: 6px; margin: 10px 0; }
+.variant-thumb { width: 50px; height: 50px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+.variant-thumb img { width: 100%; height: 100%; object-fit: contain; background: white; }
 
 .amz-card-link {
   margin-top: auto;
@@ -480,9 +590,9 @@ a:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 15px;
+  gap: 10px;
   flex: 1;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .amz-quad-item {
   display: flex;
@@ -494,13 +604,13 @@ a:hover {
 .amz-quad-item:hover { text-decoration: none; opacity: 0.85; }
 .amz-quad-img {
   width: 100%;
-  height: 100px;
+  height: 90px;
   object-fit: contain;
   background: white;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 .amz-quad-title {
-  font-size: 12px;
+  font-size: 11px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -511,10 +621,16 @@ a:hover {
    HORIZONTAL STRIP
    ========================================= */
 .h-strip { background: white; padding: 20px; margin-bottom: 20px; }
-.h-strip h2 { font-size: 21px; margin-bottom: 15px; }
+.h-strip-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.h-strip h2 { font-size: 21px; margin: 0; }
 .h-scroll {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   overflow-x: auto;
   padding-bottom: 10px;
   scrollbar-width: thin;
@@ -523,15 +639,84 @@ a:hover {
 .h-scroll::-webkit-scrollbar { height: 4px; }
 .h-scroll::-webkit-scrollbar-track { background: transparent; }
 .h-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
-.h-strip-item { flex-shrink: 0; }
+.h-strip-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  text-decoration: none;
+  color: #0f1111;
+  transition: opacity 0.2s;
+}
+.h-strip-item:hover { opacity: 0.85; text-decoration: none; }
 .h-strip-item img {
   width: 150px;
-  height: 180px;
+  height: 150px;
   object-fit: contain;
   border-radius: var(--radius-sm);
+  background: #f8f8f8;
   transition: transform 0.2s;
 }
 .h-strip-item img:hover { transform: scale(1.04); }
+.h-strip-item-name {
+  font-size: 12px;
+  margin-top: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.3;
+}
+.h-strip-item-price {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--price-color);
+  margin-top: 3px;
+}
+
+/* Small product card (used in "More items to consider" horizontal rows) */
+.small-prod-card {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 160px;
+  text-decoration: none;
+  color: #0f1111;
+  padding: 10px;
+  background: #fafafa;
+  border: 1px solid #ebebeb;
+  border-radius: var(--radius-sm);
+  transition: box-shadow 0.2s;
+}
+.small-prod-card:hover { box-shadow: var(--shadow-sm); text-decoration: none; }
+.small-prod-img {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  background: white;
+  margin-bottom: 6px;
+}
+.small-prod-name {
+  font-size: 11px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.3;
+  flex: 1;
+}
+.small-prod-price {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--price-color);
+  margin-top: 4px;
+}
+.small-prod-rating {
+  font-size: 11px;
+  color: var(--star-color);
+  margin-top: 2px;
+}
+.small-prod-rating span { color: #565959; }
 
 /* =========================================
    PRODUCT CARD (used in SearchPage & Wishlist)
@@ -1085,6 +1270,9 @@ footer { margin-top: auto; }
   .cart-right-col { width: 100%; position: static; }
   .cart-item-modern { flex-direction: column; }
   .cart-item-img-wrapper { width: 100%; height: 200px; }
+  .home-top-left { grid-template-columns: repeat(2, 1fr); }
+  .home-top-right { width: 240px; }
+  .four-col-section { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -1107,6 +1295,10 @@ footer { margin-top: auto; }
   }
   .hero-img { height: 200px; }
   .home-cards-layer { margin-top: -60px; padding: 0 10px 10px; }
+  .home-row-top { flex-direction: column; }
+  .home-top-left { grid-template-columns: repeat(2, 1fr); }
+  .home-top-right { width: 100%; flex-direction: row; }
+  .four-col-section { grid-template-columns: repeat(2, 1fr); }
   .search-layout { flex-direction: column; }
   .sidebar-filters {
     width: 100%;
@@ -1118,12 +1310,265 @@ footer { margin-top: auto; }
   .detail-layout { flex-direction: column; }
   .detail-image-col, .detail-info-col, .detail-buy-col { width: 100%; padding-right: 0; }
   .detail-image-col { padding-right: 0; }
-  .amz-card { height: auto; }
+  .amz-card { min-height: auto; }
   .grid-container { grid-template-columns: 1fr 1fr; }
   .order-confirm-container { padding: 0 12px 40px; }
 }
 
 @media (max-width: 480px) {
   .grid-container { grid-template-columns: 1fr; }
+  .four-col-section { grid-template-columns: 1fr; }
+  .home-top-left { grid-template-columns: 1fr; }
+  .home-top-right { flex-direction: column; }
   .nav-links .nav-item:not(:last-child) { display: none; }
+}
+
+/* =========================================
+   ADDRESS PICKER MODAL
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.address-modal {
+  background: white;
+  width: 440px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  padding: 15px 20px;
+  background: #f0f2f2;
+  border-bottom: 1px solid #d5d9d9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #565959;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-subtext {
+  font-size: 13px;
+  color: #565959;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.address-card {
+  border: 1px solid var(--link-color);
+  background-color: #f0f8ff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 0 0 1px var(--link-color);
+}
+
+.address-card h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #0f1111;
+}
+
+.address-card p {
+  font-size: 13px;
+  color: #0f1111;
+  line-height: 1.4;
+}
+
+.default-tag {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #565959;
+}
+
+.modal-link {
+  color: var(--link-color);
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 24px;
+}
+
+.modal-link:hover {
+  text-decoration: underline;
+  color: #c45500;
+}
+
+.modal-divider {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+  color: #767676;
+  font-size: 12px;
+}
+
+.modal-divider::before,
+.modal-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e7e7e7;
+  margin: 0 10px;
+}
+
+.pincode-form {
+  display: flex;
+  gap: 10px;
+}
+
+.pincode-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #888c8c;
+  border-radius: 4px;
+  outline: none;
+  box-shadow: 0 1px 2px rgba(15,17,17,.15) inset;
+}
+
+.pincode-input:focus {
+  border-color: #007185;
+  box-shadow: 0 0 0 3px rgba(0,113,133,.15);
+}
+
+.btn-apply {
+  background: white;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  padding: 0 16px;
+  cursor: pointer;
+  font-size: 13px;
+  box-shadow: 0 2px 5px rgba(15,17,17,.15);
+}
+
+
+.btn-apply:hover {
+  background-color: #f7fafa;
+}
+
+/* Add Address Form Styles */
+.address-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f1111;
+}
+
+.form-group input {
+  padding: 8px 10px;
+  border: 1px solid #888c8c;
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+  box-shadow: 0 1px 2px rgba(15,17,17,.15) inset;
+}
+
+.form-group input:focus {
+  border-color: #007185;
+  box-shadow: 0 0 0 3px rgba(0,113,133,.15);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn-add-submit {
+  background: var(--btn-primary);
+  border: 1px solid #fcd200;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.btn-add-submit:hover {
+  background: var(--btn-primary-hover);
+}
+
+.btn-back {
+  background: white;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* Amazon Logo Sprite Styles */
+.nav-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+.nav-logo-link:hover {
+  outline: 1px solid white;
+}
+
+.nav-logo-base {
+  width: 100px;
+  height: 30px;
+  background-image: url("https://m.media-amazon.com/images/G/01/gno/sprites/nav-sprite-global-1x-hm-dsk-reorg._CB405937547_.png");
+  background-position: -10px -51px;
+  background-size: 350px;
+}
+
+.nav-logo-locale {
+  color: white;
+  font-size: 14px;
+  margin-left: 2px;
+  margin-top: 10px;
 }

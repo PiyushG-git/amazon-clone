@@ -67,7 +67,7 @@ const ProductDetailPage = () => {
 
             <div className="detail-layout">
                 <div className="detail-image-col">
-                    <div className="carousel-container">
+                    <div className="carousel-container" style={{ position: 'relative' }}>
                         <img
                             key={activeImg}
                             src={carouselImages[activeImg] || product.image_url}
@@ -75,6 +75,9 @@ const ProductDetailPage = () => {
                             className="carousel-main-img"
                             onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?auto=format&fit=crop&q=80&w=800'}
                         />
+                        <div style={{ position: 'absolute', top: 0, left: 0 }}>
+                            <img src="https://m.media-amazon.com/images/I/41K-oXwWNTL.png" alt="New Launch" style={{ height: '80px', objectFit: 'contain' }} onError={(e) => e.target.style.display = 'none'} />
+                        </div>
                         <div className="carousel-thumbnails">
                             {carouselImages.map((img, idx) => (
                                 <img
@@ -88,6 +91,17 @@ const ProductDetailPage = () => {
                             ))}
                         </div>
                     </div>
+
+                    <div style={{ marginTop: '30px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                            <span style={{ fontSize: '18px', fontWeight: 'bold' }}>✦ Ask Rufus</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                            <div style={{ padding: '8px 12px', background: '#eaf4fd', color: '#007185', borderRadius: '16px', fontSize: '13px', cursor: 'pointer' }}>What colours is it available in?</div>
+                            <div style={{ padding: '8px 12px', background: '#eaf4fd', color: '#007185', borderRadius: '16px', fontSize: '13px', cursor: 'pointer' }}>Does it have a backlit keyboard?</div>
+                            <div style={{ padding: '8px 12px', background: '#eaf4fd', color: '#007185', borderRadius: '16px', fontSize: '13px', cursor: 'pointer' }}>Can it connect to Wi-Fi?</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="detail-info-col">
@@ -96,23 +110,81 @@ const ProductDetailPage = () => {
                         Visit the <span style={{ fontWeight: 600 }}>Amazon Clone</span> Store
                     </div>
 
-                    <div className="detail-rating-row">
-                        <span className="detail-rating-number">{parseFloat(product.rating || 0).toFixed(1)}</span>
-                        <StarRating rating={product.rating} count={product.rating_count} size="md" />
+                    <div className="detail-rating-row" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px' }}>
+                        <span style={{ color: '#007185', cursor: 'pointer' }}>4.6</span>
+                        <StarRating rating={product.rating} count={product.rating_count} size="sm" />
+                        <span style={{ color: '#007185', cursor: 'pointer', marginLeft: '4px' }}>({product.rating_count || 29})</span>
+                        <span style={{ color: '#565959', margin: '0 8px' }}>|</span>
+                        <span style={{ color: '#007185', cursor: 'pointer' }}>Search this page</span>
                     </div>
 
-                    <hr style={{ margin: '10px 0', borderColor: '#eee' }} />
-
-                    <div style={{ margin: '15px 0' }}>
-                        <span style={{ fontSize: '14px', position: 'relative', top: '-0.5em', color: '#0f1111' }}>₹</span>
-                        <span style={{ fontSize: '32px', fontWeight: 400, color: '#0f1111' }}>{parts[0]}</span>
-                        {parts[1] && <span style={{ fontSize: '14px', position: 'relative', top: '-0.5em', color: '#0f1111' }}>.{parts[1]}</span>}
+                    <div style={{ margin: '10px 0' }}>
+                        <span style={{ backgroundColor: '#232f3e', color: 'white', padding: '4px 8px', fontSize: '12px', clipPath: 'polygon(0 0, 100% 0, 95% 50%, 100% 100%, 0 100%)', display: 'inline-block', position: 'relative', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px' }}>
+                            <span style={{ fontWeight: 400 }}>Amazon's</span> <span style={{ color: '#f90', fontWeight: 600 }}>Choice</span>
+                        </span>
                     </div>
 
-                    <div style={{ fontSize: 13, color: '#565959', marginBottom: 10 }}>
-                        Inclusive of all taxes &nbsp;|&nbsp;
-                        <span style={{ color: '#007185' }}>FREE delivery on orders above ₹499</span>
+                    <hr style={{ margin: '14px 0', borderColor: '#eee' }} />
+
+                    <div style={{ marginBottom: '8px' }}>
+                        <span style={{ backgroundColor: '#cc0c39', color: 'white', padding: '4px 8px', fontSize: '12px', fontWeight: 'bold', borderRadius: '2px' }}>Mega Deal Days</span>
                     </div>
+
+                    <div style={{ margin: '10px 0', display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+                        <span style={{ fontSize: '28px', color: '#cc0c39', fontWeight: 300 }}>-21%</span>
+                        <div>
+                            <span style={{ fontSize: '14px', position: 'relative', top: '-0.7em', color: '#0f1111' }}>₹</span>
+                            <span style={{ fontSize: '32px', fontWeight: 500, color: '#0f1111' }}>{Number(product.price).toLocaleString('en-IN')}</span>
+                            {parts[1] && <span style={{ fontSize: '14px', position: 'relative', top: '-0.7em', color: '#0f1111' }}>.{parts[1]}</span>}
+                        </div>
+                    </div>
+                    
+                    <div style={{ fontSize: 13, color: '#565959', marginBottom: 4 }}>
+                        M.R.P.: <span style={{ textDecoration: 'line-through' }}>₹{(product.price * 1.25).toLocaleString('en-IN', {maximumFractionDigits: 0})}</span> <span style={{ marginLeft: 8, color: '#007185', cursor: 'pointer' }}>Price history</span>
+                    </div>
+
+                    <div style={{ margin: '6px 0' }}>
+                        <img src="https://m.media-amazon.com/images/G/31/marketing/fba/fba-badge_18px._CB485936079_.png" alt="Amazon Fulfilled" style={{ height: '15px' }} />
+                    </div>
+
+                    <div style={{ fontSize: 13, color: '#0f1111', marginBottom: 6 }}>
+                        Inclusive of all taxes
+                    </div>
+                    
+                    <div style={{ fontSize: '14px', marginBottom: '15px' }}>
+                        <strong>EMI</strong> starts at ₹{(product.price / 12).toFixed(0)}. No Cost EMI available <span style={{ color: '#007185', cursor: 'pointer' }}>EMI options <span style={{ fontSize: 10 }}>▼</span></span>
+                    </div>
+
+                    <hr style={{ margin: '15px 0', borderColor: '#eee' }} />
+                    
+                    <div style={{ display: 'flex', gap: '20px', margin: '15px 0', textAlign: 'center', fontSize: '12px', color: '#007185', overflowX: 'auto', paddingBottom: '10px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', minWidth: '80px', cursor: 'pointer' }}>
+                            <img src="https://m.media-amazon.com/images/G/31/A2I-Convert/mobile/IconFarm/icon-returns._CB484059092_.png" alt="Replacement" style={{ width: '35px', height: '35px', objectFit: 'contain' }}/>
+                            <span style={{ lineHeight: 1.2 }}>10 days Service<br/>Centre<br/>Replacement</span>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', minWidth: '80px', cursor: 'pointer' }}>
+                            <img src="https://m.media-amazon.com/images/G/31/A2I-Convert/mobile/IconFarm/trust_icon_free_shipping_81px._CB630870460_.png" alt="Free Delivery" style={{ width: '35px', height: '35px', objectFit: 'contain' }}/>
+                            <span style={{ lineHeight: 1.2 }}>Free Delivery</span>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', minWidth: '80px', cursor: 'pointer' }}>
+                            <img src="https://m.media-amazon.com/images/G/31/A2I-Convert/mobile/IconFarm/icon-warranty._CB485935626_.png" alt="Warranty" style={{ width: '35px', height: '35px', objectFit: 'contain' }}/>
+                            <span style={{ lineHeight: 1.2 }}>1 Year<br/>Warranty</span>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', minWidth: '80px', cursor: 'pointer' }}>
+                            <img src="https://m.media-amazon.com/images/G/31/A2I-Convert/mobile/IconFarm/icon-cod._CB485937110_.png" alt="Pay on Delivery" style={{ width: '35px', height: '35px', objectFit: 'contain' }}/>
+                            <span style={{ lineHeight: 1.2 }}>Pay on Delivery</span>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', minWidth: '80px', cursor: 'pointer' }}>
+                            <img src="https://m.media-amazon.com/images/G/31/A2I-Convert/mobile/IconFarm/icon-top-brand._CB617044271_.png" alt="Top Brand" style={{ width: '35px', height: '35px', objectFit: 'contain' }}/>
+                            <span style={{ lineHeight: 1.2 }}>Top Brand</span>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', minWidth: '80px', cursor: 'pointer' }}>
+                            <img src="https://m.media-amazon.com/images/G/31/A2I-Convert/mobile/IconFarm/icon-amazon-delivered._CB485933725_.png" alt="Amazon Delivered" style={{ width: '35px', height: '35px', objectFit: 'contain' }}/>
+                            <span style={{ lineHeight: 1.2 }}>Amazon<br/>Delivered</span>
+                        </div>
+                    </div>
+
+                    <hr style={{ margin: '15px 0', borderColor: '#eee' }} />
 
                     <table style={{ fontSize: '14px', width: '260px', marginBottom: '20px' }}>
                         <tbody>
@@ -141,7 +213,7 @@ const ProductDetailPage = () => {
                     <div className="buy-box">
                         <div style={{ fontSize: '20px', fontWeight: '500', marginBottom: '12px' }}>
                             <span style={{ fontSize: '12px', position: 'relative', top: '-0.3em' }}>₹</span>
-                            {parts[0]}
+                            {Number(product.price).toLocaleString('en-IN')}
                             {parts[1] && <span style={{ fontSize: '12px', position: 'relative', top: '-0.3em' }}>.{parts[1]}</span>}
                         </div>
 

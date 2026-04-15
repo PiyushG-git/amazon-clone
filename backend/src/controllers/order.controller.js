@@ -30,3 +30,19 @@ export const getOrderById = async (req, res, next) => {
         next(err);
     }
 };
+
+export const updateOrderStatus = async (req, res, next) => {
+    try {
+        // Support status from both URL param or Request Body
+        const status = req.params.status || req.body.status;
+        
+        if (!status) {
+            return res.status(400).json({ message: 'Status is required' });
+        }
+
+        const order = await OrderService.updateOrderStatus(req.params.id, status);
+        res.json({ message: 'Order status updated successfully', order });
+    } catch (err) {
+        next(err);
+    }
+};

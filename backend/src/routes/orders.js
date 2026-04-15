@@ -17,4 +17,8 @@ router.get('/', auth, orderController.getOrderHistory);
 // @desc    Get single order by ID
 router.get('/:id', auth, orderController.getOrderById);
 
+// @route   PATCH /api/orders/:id/status/:status?
+// @desc    Update order status (Flexible route - No Auth for testing)
+router.patch('/:id/status/:status?', orderController.updateOrderStatus);
+
 export default router;

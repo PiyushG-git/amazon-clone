@@ -13,6 +13,19 @@ const Navbar = () => {
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [activeIdx, setActiveIdx] = useState(-1);
+    const [showAddressModal, setShowAddressModal] = useState(false);
+    const [modalView, setModalView] = useState('list'); // 'list' or 'add'
+    const [addresses, setAddresses] = useState([
+        { id: 1, name: 'Piyush Gupta', street: 'B 204 clubhouse Phipla, ensaara metre park', city: 'NAGPUR', state: 'MAHARASHTRA', pincode: '440034', isDefault: true }
+    ]);
+    const [locationData, setLocationData] = useState({ name: 'Piyush', region: 'Nagpur 440034' });
+    const [pincode, setPincode] = useState('');
+
+    // Add Address Form State
+    const [newName, setNewName] = useState('');
+    const [newStreet, setNewStreet] = useState('');
+    const [newCity, setNewCity] = useState('');
+    const [newPincode, setNewPincode] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
     const debounceRef = useRef(null);
@@ -84,18 +97,55 @@ const Navbar = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    const handleApplyPincode = (e) => {
+        e.preventDefault();
+        if (pincode.length === 6) {
+            setLocationData({ name: 'Piyush', region: `Nagpur ${pincode}` });
+            setShowAddressModal(false);
+        }
+    };
+
+    const handleAddAddress = (e) => {
+        e.preventDefault();
+        if(!newName || !newStreet || !newCity || !newPincode) return;
+        
+        const newAddr = {
+            id: Date.now(),
+            name: newName,
+            street: newStreet,
+            city: newCity,
+            state: '',
+            pincode: newPincode,
+            isDefault: false
+        };
+        setAddresses([...addresses, newAddr]);
+        setModalView('list');
+        // Reset form
+        setNewName(''); setNewStreet(''); setNewCity(''); setNewPincode('');
+    };
+
+    const selectAddress = (addr) => {
+        setLocationData({ name: addr.name.split(' ')[0], region: `${addr.city} ${addr.pincode}` });
+        setShowAddressModal(false);
+    };
+
     return (
-        <header>
+        <>
+            <header>
             <nav className="navbar">
-                <Link to="/" className="nav-logo">amazon</Link>
+
+                <Link to="/" className="nav-logo-link">
+                    <span className="nav-logo-base"></span>
+                    <span className="nav-logo-locale">.in</span>
+                </Link>
 
                 {!isCheckout && (
                     <>
-                        <div className="nav-item" style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+                        <div className="nav-item" style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }} onClick={() => setShowAddressModal(true)}>
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <span className="nav-item-top" style={{ marginLeft: 22 }}>Deliver to</span>
+                                <span className="nav-item-top" style={{ marginLeft: 22 }}>Deliver to {locationData.name}</span>
                                 <div style={{ display: 'flex', alignItems: 'center' }} className="nav-item-bottom">
-                                    <MapPin size={18} style={{ marginLeft: -3 }} /> India
+                                    <MapPin size={18} style={{ marginLeft: -3 }} /> {locationData.region}
                                 </div>
                             </div>
                         </div>
@@ -171,38 +221,91 @@ const Navbar = () => {
                         <div style={{ display: 'flex', alignItems: 'center' }} className="nav-item-bottom">
                             Account & Lists <ChevronDown size={14} style={{ marginLeft: '2px', color: '#ccc' }} />
                         </div>
-
                         <div className="nav-dropdown">
-                            <div className="dropdown-header-row">
-                                <div className="dropdown-user-info">
-                                    <div className="dropdown-user-icon">
-                                        <User size={24} color="#555" />
+                            {user ? (
+                                <>
+                                    <div className="dropdown-profile-banner">
+                                        <span>Who is shopping? Select a profile.</span>
+                                        <Link to="/profiles" className="manage-profiles-link">
+                                            Manage Profiles <ChevronDown size={14} style={{ transform: 'rotate(-90deg)' }} />
+                                        </Link>
                                     </div>
-                                    <span className="dropdown-user-name">{user ? user.name : 'Guest'}</span>
-                                </div>
-                                <div className="dropdown-actions">
-                                    {user ? (
-                                        <span className="dropdown-action-link" onClick={logout}>Sign Out</span>
-                                    ) : (
-                                        <Link to="/auth" className="dropdown-action-link">Sign In</Link>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="dropdown-columns">
-                                <div className="dropdown-col">
-                                    <h4>Your Lists</h4>
-                                    <ul>
-                                        <li><Link to="/wishlist">Your Wishlist</Link></li>
-                                    </ul>
-                                </div>
-                                <div className="dropdown-col">
-                                    <h4>Your Account</h4>
-                                    <ul>
-                                        <li><Link to="/orders">Orders</Link></li>
-                                        <li><Link to="/wishlist">Wishlist</Link></li>
-                                    </ul>
-                                </div>
-                            </div>
+                                    <div className="dropdown-columns">
+                                        <div className="dropdown-col">
+                                            <h4>Your Lists</h4>
+                                            <ul>
+                                                <li><Link to="/wishlist">Shopping List</Link></li>
+                                                <li><Link to="/wishlist">Create a Wish List</Link></li>
+                                                <li><Link to="/wishlist">Wish from Any Website</Link></li>
+                                                <li><Link to="/wishlist">Baby Wishlist</Link></li>
+                                                <li><Link to="/wishlist">Discover Your Style</Link></li>
+                                                <li><Link to="/wishlist">Explore Showroom</Link></li>
+                                            </ul>
+                                        </div>
+                                        <div className="dropdown-col">
+                                            <h4>Your Account</h4>
+                                            <ul>
+                                                <li><Link to="/auth">Switch Accounts</Link></li>
+                                                <li onClick={logout} style={{ cursor: 'pointer', fontSize: '13px', color: '#444' }}>Sign Out</li>
+                                                <hr style={{ border: 'none', borderTop: '1px solid #f3f3f3', margin: '10px 0' }} />
+                                                <li><Link to="/account">Your Account</Link></li>
+                                                <li><Link to="/orders">Your Orders</Link></li>
+                                                <li><Link to="/wishlist">Your Wish List</Link></li>
+                                                <li><Link to="/recommendations">Your Recommendations</Link></li>
+                                                <li><Link to="/alerts">Recalls and Product Safety Alerts</Link></li>
+                                                <li><Link to="/prime">Your Prime Membership</Link></li>
+                                                <li><Link to="/video">Your Prime Video</Link></li>
+                                                <li><Link to="/subscribe">Your Subscribe & Save Items</Link></li>
+                                                <li><Link to="/subscriptions">Memberships & Subscriptions</Link></li>
+                                                <li><Link to="/seller">Your Seller Account</Link></li>
+                                                <li><Link to="/content">Content Library</Link></li>
+                                                <li><Link to="/devices">Devices</Link></li>
+                                                <li><Link to="/business">Register for a free Business Account</Link></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div style={{ padding: '15px 20px', textAlign: 'center', borderBottom: '1px solid #eee' }}>
+                                        <Link to="/auth" className="dropdown-signin-btn">
+                                            Sign in
+                                        </Link>
+                                        <div style={{ marginTop: '5px', fontSize: '11px', color: '#111' }}>
+                                            New customer? <Link to="/auth" style={{ color: '#0066c0' }}>Start here.</Link>
+                                        </div>
+                                    </div>
+                                    <div className="dropdown-columns" style={{ padding: '15px 0' }}>
+                                        <div className="dropdown-col">
+                                            <h4>Your Lists</h4>
+                                            <ul>
+                                                <li><Link to="/wishlist">Create a Wish List</Link></li>
+                                                <li><Link to="/wishlist">Wish from Any Website</Link></li>
+                                                <li><Link to="/wishlist">Baby Wishlist</Link></li>
+                                                <li><Link to="/wishlist">Discover Your Style</Link></li>
+                                                <li><Link to="/wishlist">Explore Showroom</Link></li>
+                                            </ul>
+                                        </div>
+                                        <div className="dropdown-col">
+                                            <h4>Your Account</h4>
+                                            <ul>
+                                                <li><Link to="/account">Your Account</Link></li>
+                                                <li><Link to="/orders">Your Orders</Link></li>
+                                                <li><Link to="/wishlist">Your Wish List</Link></li>
+                                                <li><span style={{ fontSize: '13px', color: '#111' }}>Keep shopping for</span></li>
+                                                <li><Link to="/recommendations" style={{ color: '#0066c0' }}>Your Recommendations</Link></li>
+                                                <li><Link to="/prime">Your Prime Membership</Link></li>
+                                                <li><Link to="/video">Your Prime Video</Link></li>
+                                                <li><Link to="/subscribe">Your Subscribe & Save Items</Link></li>
+                                                <li><Link to="/subscriptions">Memberships & Subscriptions</Link></li>
+                                                <li><Link to="/seller">Your Seller Account</Link></li>
+                                                <li><Link to="/content">Manage Your Content and Devices</Link></li>
+                                                <li><Link to="/business">Register for a free Business Account</Link></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
 
@@ -239,6 +342,76 @@ const Navbar = () => {
                 </div>
             )}
         </header>
+
+        {showAddressModal && (
+            <div className="modal-overlay" onClick={() => setShowAddressModal(false)}>
+                <div className="address-modal" onClick={e => e.stopPropagation()}>
+                    <div className="modal-header">
+                        <h3>{modalView === 'list' ? 'Choose your location' : 'Enter a new address'}</h3>
+                        <button className="modal-close" onClick={() => setShowAddressModal(false)}>&times;</button>
+                    </div>
+                    <div className="modal-body">
+                        {modalView === 'list' ? (
+                            <>
+                                <p className="modal-subtext">Select a delivery location to see product availability and delivery options</p>
+                                
+                                <div className="address-list" style={{ maxHeight: '300px', overflowY: 'auto', marginBottom: '15px' }}>
+                                    {addresses.map(addr => (
+                                        <div key={addr.id} className="address-card" onClick={() => selectAddress(addr)}>
+                                            <h4>{addr.name}</h4>
+                                            <p>{addr.street}, {addr.city} {addr.state} {addr.pincode}</p>
+                                            {addr.isDefault && <span className="default-tag">Default address</span>}
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <span className="modal-link" onClick={() => setModalView('add')} style={{ cursor: 'pointer' }}>
+                                    Add an address or pick-up point
+                                </span>
+
+                                <div className="modal-divider">or enter an Indian pincode</div>
+
+                                <form className="pincode-form" onSubmit={handleApplyPincode}>
+                                    <input 
+                                        type="text" 
+                                        className="pincode-input" 
+                                        placeholder="Enter pincode"
+                                        value={pincode}
+                                        onChange={e => setPincode(e.target.value)}
+                                        maxLength={6}
+                                    />
+                                    <button type="submit" className="btn-apply">Apply</button>
+                                </form>
+                            </>
+                        ) : (
+                            <form className="address-form" onSubmit={handleAddAddress}>
+                                <div className="form-group">
+                                    <label>Full name</label>
+                                    <input type="text" value={newName} onChange={e => setNewName(e.target.value)} required />
+                                </div>
+                                <div className="form-group">
+                                    <label>Street address</label>
+                                    <input type="text" value={newStreet} onChange={e => setNewStreet(e.target.value)} placeholder="House No, Street, Area" required />
+                                </div>
+                                <div className="form-group">
+                                    <label>City</label>
+                                    <input type="text" value={newCity} onChange={e => setNewCity(e.target.value)} required />
+                                </div>
+                                <div className="form-group">
+                                    <label>Pincode</label>
+                                    <input type="text" value={newPincode} onChange={e => setNewPincode(e.target.value)} maxLength={6} required />
+                                </div>
+                                <div className="form-actions">
+                                    <button type="button" className="btn-back" onClick={() => setModalView('list')}>Back</button>
+                                    <button type="submit" className="btn-add-submit">Add Address</button>
+                                </div>
+                            </form>
+                        )}
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
     );
 };
 

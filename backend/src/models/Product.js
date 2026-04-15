@@ -1,7 +1,7 @@
 import db from '../config/db.js';
 
 class Product {
-    static async findAll({ search, category, sort, minPrice, maxPrice }) {
+    static async findAll({ search, category, sort, minPrice, maxPrice, limit }) {
         let queryStr = 'SELECT * FROM products WHERE 1=1';
         let params = [];
         let paramIndex = 1;
@@ -34,6 +34,12 @@ class Product {
             newest:     'ORDER BY created_at DESC',
         };
         queryStr += ` ${sortOptions[sort] || 'ORDER BY created_at DESC'}`;
+
+        if (limit) {
+            queryStr += ` LIMIT $${paramIndex}`;
+            params.push(parseInt(limit));
+            paramIndex++;
+        }
 
         const result = await db.query(queryStr, params);
         return result.rows;
