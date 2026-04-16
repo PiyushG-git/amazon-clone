@@ -18,7 +18,7 @@ const routes = [
     { path: '/auth', element: <AuthPage /> },
     { path: '/product/:id', element: <ProductDetailPage /> },
     { path: '/cart', element: <CartPage /> },
-    { path: '/checkout', element: <CheckoutPage /> },
+    { path: '/checkout', element: <Protected><CheckoutPage /></Protected> },
     { path: '/wishlist', element: <Protected><WishlistPage /></Protected> },
     { path: '/orders', element: <Protected><OrderHistoryPage /></Protected> },
     { path: '/order-confirmation/:orderId', element: <Protected><OrderConfirmationPage /></Protected> },

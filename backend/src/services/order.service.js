@@ -42,12 +42,9 @@ class OrderService {
             }));
         }
 
-        // Validate stock and calculate total
+        // Calculate total (Stock is validated atomically in Order.create)
         let total_price = 0;
         for (let item of pendingItems) {
-            if (item.stock < item.quantity) {
-                throw { status: 400, message: `Insufficient stock for "${item.name}"` };
-            }
             total_price += parseFloat(item.price) * parseInt(item.quantity);
         }
 

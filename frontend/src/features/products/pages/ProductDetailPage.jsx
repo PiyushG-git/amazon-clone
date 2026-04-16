@@ -4,6 +4,7 @@ import useProductDetail from '../hooks/useProductDetail';
 import useCart from '../../cart/hooks/useCart';
 import useWishlist from '../../wishlist/hooks/useWishlist';
 import StarRating from '../components/StarRating';
+import useAppStore from '../../../app/app.store';
 
 // Generate pseudo-carousel images from the base unsplash URL
 const generateCarouselImages = (baseUrl, count = 5) => {
@@ -254,7 +255,14 @@ const ProductDetailPage = () => {
                                 <button
                                     className="btn btn-secondary"
                                     style={{ width: '100%', borderRadius: '20px', marginBottom: '16px', padding: '9px 0' }}
-                                    onClick={() => navigate(`/checkout?buyNow=true&productId=${product.id}&qty=${qty}`)}
+                                    onClick={() => {
+                                        const { user } = useAppStore.getState();
+                                        if (!user) {
+                                            navigate('/auth');
+                                            return;
+                                        }
+                                        navigate(`/checkout?buyNow=true&productId=${product.id}&qty=${qty}`);
+                                    }}
                                 >
                                     Buy Now
                                 </button>

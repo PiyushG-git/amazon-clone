@@ -1,8 +1,10 @@
 import { useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useAppStore from '../../../app/app.store';
 import cartService from '../services/cart.service';
 
 const useCart = () => {
+    const navigate = useNavigate();
     // Use individual selectors to avoid object reference re-renders
     const token = useAppStore((state) => state.token);
     const user = useAppStore((state) => state.user);
@@ -31,7 +33,7 @@ const useCart = () => {
 
     const addToCart = async (product_id, quantity = 1) => {
         if (!user) {
-            alert("Please login first to add items");
+            navigate('/auth');
             return;
         }
         try {

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Trash2, Plus, Minus, ArrowRight } from 'lucide-react';
 import useCart from '../hooks/useCart';
+import useAppStore from '../../../app/app.store';
 
 const CartPage = () => {
     const { cart, updateQuantity, removeFromCart, cartTotal, cartCount } = useCart();
@@ -105,7 +106,14 @@ const CartPage = () => {
                     <button 
                         className="btn btn-primary" 
                         style={{ width: '100%', padding: '10px', borderRadius: '8px', fontSize: '15px' }} 
-                        onClick={() => navigate('/checkout')}
+                        onClick={() => {
+                            const { user } = useAppStore.getState();
+                            if (!user) {
+                                navigate('/auth');
+                                return;
+                            }
+                            navigate('/checkout');
+                        }}
                     >
                         Proceed to Checkout
                     </button>

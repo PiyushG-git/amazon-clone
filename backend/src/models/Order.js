@@ -23,10 +23,14 @@ class Order {
                     'INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES ($1, $2, $3, $4)',
                     [orderId, item.product_id, item.quantity, item.price]
                 );
-                await client.query(
-                    'UPDATE products SET stock = stock - $1 WHERE id = $2',
+                const updateResult = await client.query(
+                    'UPDATE products SET stock = stock - $1 WHERE id = $2 AND stock >= $1 RETURNING *',
                     [item.quantity, item.product_id]
                 );
+                
+                if (updateResult.rows.length === 0) {
+                    throw { status: 400, message: `Insufficient stock for product id ${item.product_id}` };
+                }
             }
 
             await client.query('COMMIT');

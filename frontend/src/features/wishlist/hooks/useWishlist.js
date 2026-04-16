@@ -1,8 +1,10 @@
 import { useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useAppStore from '../../../app/app.store';
 import wishlistService from '../services/wishlist.service';
 
 const useWishlist = () => {
+    const navigate = useNavigate();
     // Use individual selectors to avoid object reference re-renders
     const token = useAppStore((state) => state.token);
     const user = useAppStore((state) => state.user);
@@ -29,7 +31,7 @@ const useWishlist = () => {
 
     const addToWishlist = async (product_id) => {
         if (!user) {
-            alert("Please login to use Wishlist");
+            navigate('/auth');
             return;
         }
         try {

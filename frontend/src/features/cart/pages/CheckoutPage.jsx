@@ -23,12 +23,6 @@ const CheckoutPage = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (!user) {
-            navigate('/auth');
-        }
-    }, [user, navigate]);
-
-    useEffect(() => {
         if (isBuyNow && directProductId) {
             productService.getProductById(directProductId)
                 .then(setDirectProduct)

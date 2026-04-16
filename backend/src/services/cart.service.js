@@ -7,17 +7,6 @@ class CartService {
     }
 
     static async addItemToCart(userId, { product_id, quantity }) {
-        // Validate product exists
-        const product = await Product.findById(product_id);
-        if (!product) {
-            throw { status: 404, message: 'Product not found' };
-        }
-
-        // Validate stock
-        if (product.stock < (quantity || 1)) {
-            throw { status: 400, message: 'Insufficient stock' };
-        }
-
         await Cart.addItem(userId, product_id, quantity || 1);
         return { message: 'Item added to cart' };
     }
