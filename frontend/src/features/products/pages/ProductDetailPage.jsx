@@ -112,7 +112,7 @@ const ProductDetailPage = () => {
                     </div>
 
                     <div className="detail-rating-row" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px' }}>
-                        <span style={{ color: '#007185', cursor: 'pointer' }}>4.6</span>
+                        <span style={{ color: '#007185', cursor: 'pointer' }}>{product.rating}</span>
                         <StarRating rating={product.rating} count={product.rating_count} size="sm" />
                         <span style={{ color: '#007185', cursor: 'pointer', marginLeft: '4px' }}>({product.rating_count || 29})</span>
                         <span style={{ color: '#565959', margin: '0 8px' }}>|</span>

@@ -46,7 +46,9 @@ const CartPage = () => {
                             <Link to={`/product/${item.id}`} className="cart-item-title">
                                 {item.name}
                             </Link>
-                            <div className="cart-item-stock">In Stock</div>
+                            <div className="cart-item-stock" style={{ color: item.stock > 0 ? '#007600' : '#c45500' }}>
+                                {item.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                            </div>
                             <div style={{ fontSize: '12px', color: '#565959' }}>Eligible for FREE Shipping</div>
                             
                             <div className="cart-item-actions">

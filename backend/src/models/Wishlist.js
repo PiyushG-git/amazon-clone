@@ -3,7 +3,7 @@ import db from '../config/db.js';
 class Wishlist {
     static async findByUserId(userId) {
         const result = await db.query(`
-            SELECT w.id as wishlist_id, p.* 
+            SELECT w.id as wishlist_id, w.product_id, p.name, p.description, p.price, p.stock, p.category, p.image_url, p.rating, p.rating_count
             FROM wishlist_items w 
             JOIN products p ON w.product_id = p.id 
             WHERE w.user_id = $1
