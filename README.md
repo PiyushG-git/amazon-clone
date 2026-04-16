@@ -113,7 +113,7 @@ erDiagram
     PRODUCTS ||--o{ WISHLIST_ITEMS : "added as"
     PRODUCTS ||--o{ ORDER_ITEMS : "purchased as"
     
-    ORDERS ||--b{ ORDER_ITEMS : "contains"
+    ORDERS ||--|{ ORDER_ITEMS : "contains"
 
     USERS {
         int id PK
